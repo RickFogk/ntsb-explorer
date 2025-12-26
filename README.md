@@ -70,11 +70,38 @@ node scripts/import-data.mjs
 pnpm dev
 ```
 
-## Data File
+## Data Files for LLM Training
 
-The NTSB accident data (143MB, 23,741 records) is available as a release asset:
+Multiple export formats are available for different use cases:
 
-**Download:** [ntsb_accidents.jsonl](https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_accidents.jsonl)
+| File | Size | Use Case | Download |
+|------|------|----------|----------|
+| `ntsb_accidents.jsonl` | 143 MB | Full LLM training data | [Download](https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_accidents.jsonl) |
+| `ntsb_causes_only.csv` | 11.5 MB | Spreadsheet analysis | [Download](https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_causes_only.csv) |
+| `ntsb_knowledge_base.md` | 4.5 KB | Cursor/LLM context | [Download](https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_knowledge_base.md) |
+| `ntsb_cursor_context.json` | 3.2 KB | Compact API context | [Download](https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_cursor_context.json) |
+
+### Recommended: JSONL for LLM Training
+
+The JSONL file is ideal for LLM fine-tuning because:
+- **One JSON object per line** - Easy to process in streaming pipelines
+- **Contains probable causes and contributing factors** - The key data for understanding accident causation
+- **143MB is manageable** - Fits most LLM fine-tuning workflows
+
+### For Cursor Specifically
+
+1. **Markdown Knowledge Base** - Download `ntsb_knowledge_base.md` and add it to your project's docs folder. Cursor will use it as context when you ask about aviation accidents.
+
+2. **Compact JSON Context** - Use `ntsb_cursor_context.json` for a smaller context file with summary statistics and sample records.
+
+### For Data Analysis
+
+Use `ntsb_causes_only.csv` for quick analysis in spreadsheets. Contains:
+- Event ID and NTSB number
+- Event date and aircraft info
+- Probable cause text
+- Contributing factors (pipe-separated)
+- Cause/factor counts
 
 Each record in the JSONL file contains:
 - Event details (ID, date, location)
