@@ -56,8 +56,12 @@ cp .env.example .env
 pnpm db:push
 ```
 
-5. Import NTSB data (optional - requires data file):
+5. **Download and import NTSB data:**
 ```bash
+# Download the data file from GitHub Releases
+curl -L -o ntsb_accidents.jsonl https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_accidents.jsonl
+
+# Import into database
 node scripts/import-data.mjs
 ```
 
@@ -65,6 +69,20 @@ node scripts/import-data.mjs
 ```bash
 pnpm dev
 ```
+
+## Data File
+
+The NTSB accident data (143MB, 23,741 records) is available as a release asset:
+
+**Download:** [ntsb_accidents.jsonl](https://github.com/RickFogk/ntsb-explorer/releases/download/v1.0.0/ntsb_accidents.jsonl)
+
+Each record in the JSONL file contains:
+- Event details (ID, date, location)
+- Aircraft information (make, model, category)
+- Injury statistics
+- **Probable cause** (official NTSB determination)
+- **Contributing factors** (categorized findings)
+- Narratives (preliminary and factual reports)
 
 ## Data Structure
 
