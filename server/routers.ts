@@ -69,8 +69,7 @@ export const appRouter = router({
       const makesResult = await db.selectDistinct({ make: accidents.aircraftMake })
         .from(accidents)
         .where(isNotNull(accidents.aircraftMake))
-        .orderBy(accidents.aircraftMake)
-        .limit(200);
+        .orderBy(accidents.aircraftMake);
 
       return {
         states: statesResult.map(r => r.state).filter(Boolean) as string[],
@@ -162,6 +161,127 @@ export const appRouter = router({
 
         return result || null;
       }),
+
+    getCategoryStats: publicProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) {
+        return {
+          totalFindings: 0,
+          totalCauses: 0,
+          totalFactors: 0,
+          categories: [],
+          findings: []
+        };
+      }
+
+      // Get all findings from the database
+      const results = await db.select({ findings: accidents.findings })
+        .from(accidents)
+        .where(isNotNull(accidents.findings));
+
+      // Process findings into categories
+      const categoryMap = new Map<string, {
+        total: number;
+        causes: number;
+        factors: number;
+        subcategories: Map<string, number>;
+      }>();
+
+      const findingMap = new Map<string, {
+        fullPath: string;
+        category: string;
+        subcategory: string;
+        detail: string;
+        isCause: boolean;
+        count: number;
+      }>();
+
+      let totalFindings = 0;
+      let totalCauses = 0;
+      let totalFactors = 0;
+
+      for (const row of results) {
+        if (!row.findings) continue;
+        
+        const findingsList = row.findings.split(' | ');
+        for (const finding of findingsList) {
+          const isCause = finding.endsWith(' - C');
+          const isFactor = finding.endsWith(' - F');
+          const cleanFinding = finding.replace(/ - [CF]$/, '');
+          const parts = cleanFinding.split('-').map(p => p.trim());
+          
+          if (parts.length === 0) continue;
+          
+          const category = parts[0];
+          const subcategory = parts[1] || '';
+          const detail = parts.slice(2).join(' - ');
+          
+          totalFindings++;
+          if (isCause) totalCauses++;
+          if (isFactor) totalFactors++;
+
+          // Update category stats
+          if (!categoryMap.has(category)) {
+            categoryMap.set(category, {
+              total: 0,
+              causes: 0,
+              factors: 0,
+              subcategories: new Map()
+            });
+          }
+          const catStats = categoryMap.get(category)!;
+          catStats.total++;
+          if (isCause) catStats.causes++;
+          if (isFactor) catStats.factors++;
+          if (subcategory) {
+            catStats.subcategories.set(
+              subcategory, 
+              (catStats.subcategories.get(subcategory) || 0) + 1
+            );
+          }
+
+          // Update finding stats
+          const key = `${cleanFinding}|${isCause}`;
+          if (!findingMap.has(key)) {
+            findingMap.set(key, {
+              fullPath: cleanFinding,
+              category,
+              subcategory,
+              detail,
+              isCause,
+              count: 0
+            });
+          }
+          findingMap.get(key)!.count++;
+        }
+      }
+
+      // Convert to arrays and sort
+      const categories = Array.from(categoryMap.entries())
+        .map(([category, stats]) => ({
+          category,
+          total: stats.total,
+          causes: stats.causes,
+          factors: stats.factors,
+          subcategories: Array.from(stats.subcategories.entries())
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 10)
+        }))
+        .sort((a, b) => b.total - a.total);
+
+      const findings = Array.from(findingMap.values())
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 500); // Limit to top 500 findings
+
+      return {
+        totalFindings,
+        totalCauses,
+        totalFactors,
+        categories,
+        findings
+      };
+    }),
   }),
 });
 

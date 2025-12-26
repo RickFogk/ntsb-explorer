@@ -1,0 +1,25 @@
+{
+  "query": "SELECT findings FROM accidents WHERE findings IS NOT NULL LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2iKLWGUstgLB53A.c25658259096 --database M9ya9YXSEZs4YEgpxR35XF --execute SELECT findings FROM accidents WHERE findings IS NOT NULL LIMIT 5;",
+  "rows": [
+    {
+      "findings": "Personnel issues-Action/decision-Info processing/decision-Identification/recognition-Pilot of other aircraft - C | Personnel issues-Action/decision-Info processing/decision-Identification/recognition-Pilot - C"
+    },
+    {
+      "findings": "Environmental issues-Conditions/weather/phenomena-Wind-Crosswind-Not specified - F | Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Directional control-Not attained/maintained - C"
+    },
+    {
+      "findings": "Environmental issues-Conditions/weather/phenomena-Light condition-Dark-Not specified - F | Personnel issues-Action/decision-Info processing/decision-Identification/recognition-Ground crew - C"
+    },
+    {
+      "findings": "Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Landing flare-Not specified - C | Aircraft-Aircraft oper/perf/capability-Performance/control parameters-(general)-Not attained/maintained - C | Environmental issues-Physical environment-Object/animal/substance-Snow/ice-Not specified "
+    },
+    {
+      "findings": "Aircraft-Aircraft power plant-Engine (reciprocating)-Recip engine power section-Failure - F | Aircraft-Aircraft power plant-Engine (reciprocating)-Recip eng oil sys-Not specified  | Environmental issues-Physical environment-Object/animal/substance-Fence/fence post-Not specified  | Environmental issues-Physical environment-Object/animal/substance-Tree(s)-Not specified  | Personnel issues-Task performance-Use of equip/info-Use of checklist-Pilot - C | Personnel issues-Action/decision-Action-Incorrect action performance-Pilot - C"
+    }
+  ],
+  "messages": [],
+  "stdout": "findings\nPersonnel issues-Action/decision-Info processing/decision-Identification/recognition-Pilot of other aircraft - C | Personnel issues-Action/decision-Info processing/decision-Identification/recognition-Pilot - C\nEnvironmental issues-Conditions/weather/phenomena-Wind-Crosswind-Not specified - F | Aircraft-Aircraft oper/perf/capability-Performance/control parameters-Directional control-Not attained/maintained - C\nEnvironmental issues-Conditions/weather/phenomena-Light condition-Dark-Not specified - F | Personnel issues-Action/decision-Info processing/decision-Identification/recognition-Ground crew - C\nAircraft-Aircraft oper/perf/capability-Performance/control parameters-Landing flare-Not specified - C | Aircraft-Aircraft oper/perf/capability-Performance/control parameters-(general)-Not attained/maintained - C | Environmental issues-Physical environment-Object/animal/substance-Snow/ice-Not specified \nAircraft-Aircraft power plant-Engine (reciprocating)-Recip engine power section-Failure - F | Aircraft-Aircraft power plant-Engine (reciprocating)-Recip eng oil sys-Not specified  | Environmental issues-Physical environment-Object/animal/substance-Fence/fence post-Not specified  | Environmental issues-Physical environment-Object/animal/substance-Tree(s)-Not specified  | Personnel issues-Task performance-Use of equip/info-Use of checklist-Pilot - C | Personnel issues-Action/decision-Action-Incorrect action performance-Pilot - C\n",
+  "stderr": "",
+  "execution_time_ms": 125
+}

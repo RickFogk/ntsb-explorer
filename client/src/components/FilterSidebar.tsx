@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,10 +6,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { 
   Filter, X, RotateCcw, AlertCircle, AlertTriangle, 
-  MinusCircle, CheckCircle, Search
+  MinusCircle, CheckCircle, Search, Check, ChevronsUpDown
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import type { FilterState, SeverityLevel } from '@/types/accident';
 
 interface FilterSidebarProps {
@@ -38,6 +41,9 @@ export function FilterSidebar({
   isOpen,
   onToggle
 }: FilterSidebarProps) {
+  const [makeSearchOpen, setMakeSearchOpen] = useState(false);
+  const [makeSearchValue, setMakeSearchValue] = useState('');
+
   const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
     onFiltersChange({ ...filters, [key]: value });
   };
@@ -70,6 +76,15 @@ export function FilterSidebar({
     filters.dateTo || 
     filters.aircraftMake ||
     filters.hasProblableCause;
+
+  // Filter makes based on search
+  const filteredMakes = useMemo(() => {
+    if (!makeSearchValue) return uniqueMakes.slice(0, 100);
+    const search = makeSearchValue.toLowerCase();
+    return uniqueMakes.filter(make => 
+      make.toLowerCase().includes(search)
+    ).slice(0, 100);
+  }, [uniqueMakes, makeSearchValue]);
 
   return (
     <>
@@ -203,27 +218,76 @@ export function FilterSidebar({
                 </Select>
               </div>
 
-              {/* Aircraft Make */}
+              {/* Aircraft Make - Searchable Combobox */}
               <div className="space-y-2">
-                <Label htmlFor="make" className="text-sm font-medium">
+                <Label className="text-sm font-medium">
                   Aircraft Make
+                  <span className="text-xs text-muted-foreground ml-2">
+                    ({uniqueMakes.length.toLocaleString()} manufacturers)
+                  </span>
                 </Label>
-                <Select 
-                  value={filters.aircraftMake} 
-                  onValueChange={(value) => updateFilter('aircraftMake', value === 'all' ? '' : value)}
-                >
-                  <SelectTrigger className="bg-sidebar-accent">
-                    <SelectValue placeholder="All manufacturers" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All manufacturers</SelectItem>
-                    {uniqueMakes.slice(0, 100).map((make) => (
-                      <SelectItem key={make} value={make}>
-                        {make}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover open={makeSearchOpen} onOpenChange={setMakeSearchOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={makeSearchOpen}
+                      className="w-full justify-between bg-sidebar-accent font-normal"
+                    >
+                      {filters.aircraftMake || "All manufacturers"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[280px] p-0" align="start">
+                    <Command>
+                      <CommandInput 
+                        placeholder="Search manufacturers..." 
+                        value={makeSearchValue}
+                        onValueChange={setMakeSearchValue}
+                      />
+                      <CommandList>
+                        <CommandEmpty>No manufacturer found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value="all"
+                            onSelect={() => {
+                              updateFilter('aircraftMake', '');
+                              setMakeSearchOpen(false);
+                              setMakeSearchValue('');
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                !filters.aircraftMake ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            All manufacturers
+                          </CommandItem>
+                          {filteredMakes.map((make) => (
+                            <CommandItem
+                              key={make}
+                              value={make}
+                              onSelect={() => {
+                                updateFilter('aircraftMake', make);
+                                setMakeSearchOpen(false);
+                                setMakeSearchValue('');
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  filters.aircraftMake === make ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {make}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               <Separator />

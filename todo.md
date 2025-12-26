@@ -17,4 +17,11 @@
 - [x] Implement grid/list view toggle
 - [x] Implement load more pagination
 - [x] Write unit tests for accidents API
+- [x] Fix aircraft make filter to show all manufacturers (now 3,741 with searchable dropdown)
+- [x] Analyze contributing factors structure and create categories
+- [x] Create categorization system for probable causes (5 main categories)
+- [x] Build Causes & Factors page with category browsing
+- [x] Add getCategoryStats API endpoint
 - [ ] Add date range filtering
+- [ ] Add category-based filtering on main page
+

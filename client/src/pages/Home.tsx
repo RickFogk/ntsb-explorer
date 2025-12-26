@@ -9,8 +9,9 @@ import { Progress } from '@/components/ui/progress';
 import { 
   Plane, Database, AlertTriangle, FileText, 
   AlertCircle, MinusCircle, CheckCircle, ChevronDown,
-  LayoutGrid, List, Download
+  LayoutGrid, List, Download, Tags
 } from 'lucide-react';
+import { Link } from 'wouter';
 import type { FilterState } from '@/types/accident';
 
 const ITEMS_PER_PAGE = 24;
@@ -142,6 +143,12 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex items-center gap-2">
+                <Link href="/causes">
+                  <Button variant="outline" size="sm">
+                    <Tags className="h-4 w-4 mr-2" />
+                    Causes & Factors
+                  </Button>
+                </Link>
                 <Button
                   variant="outline"
                   size="sm"
