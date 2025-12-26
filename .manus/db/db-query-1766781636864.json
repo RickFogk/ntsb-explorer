@@ -1,0 +1,94 @@
+{
+  "query": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'accidents';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2iKLWGUstgLB53A.c25658259096 --database M9ya9YXSEZs4YEgpxR35XF --execute SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'accidents';",
+  "rows": [
+    {
+      "COLUMN_NAME": "id"
+    },
+    {
+      "COLUMN_NAME": "eventId"
+    },
+    {
+      "COLUMN_NAME": "ntsbNumber"
+    },
+    {
+      "COLUMN_NAME": "eventDate"
+    },
+    {
+      "COLUMN_NAME": "city"
+    },
+    {
+      "COLUMN_NAME": "state"
+    },
+    {
+      "COLUMN_NAME": "country"
+    },
+    {
+      "COLUMN_NAME": "latitude"
+    },
+    {
+      "COLUMN_NAME": "longitude"
+    },
+    {
+      "COLUMN_NAME": "aircraftMake"
+    },
+    {
+      "COLUMN_NAME": "aircraftModel"
+    },
+    {
+      "COLUMN_NAME": "aircraftCategory"
+    },
+    {
+      "COLUMN_NAME": "farPart"
+    },
+    {
+      "COLUMN_NAME": "damage"
+    },
+    {
+      "COLUMN_NAME": "weather"
+    },
+    {
+      "COLUMN_NAME": "lightCondition"
+    },
+    {
+      "COLUMN_NAME": "flightPhase"
+    },
+    {
+      "COLUMN_NAME": "highestSeverity"
+    },
+    {
+      "COLUMN_NAME": "fatalCount"
+    },
+    {
+      "COLUMN_NAME": "seriousCount"
+    },
+    {
+      "COLUMN_NAME": "minorCount"
+    },
+    {
+      "COLUMN_NAME": "probableCause"
+    },
+    {
+      "COLUMN_NAME": "narrativePreliminary"
+    },
+    {
+      "COLUMN_NAME": "narrativeFactual"
+    },
+    {
+      "COLUMN_NAME": "findings"
+    },
+    {
+      "COLUMN_NAME": "causeCount"
+    },
+    {
+      "COLUMN_NAME": "factorCount"
+    },
+    {
+      "COLUMN_NAME": "createdAt"
+    }
+  ],
+  "messages": [],
+  "stdout": "COLUMN_NAME\nid\neventId\nntsbNumber\neventDate\ncity\nstate\ncountry\nlatitude\nlongitude\naircraftMake\naircraftModel\naircraftCategory\nfarPart\ndamage\nweather\nlightCondition\nflightPhase\nhighestSeverity\nfatalCount\nseriousCount\nminorCount\nprobableCause\nnarrativePreliminary\nnarrativeFactual\nfindings\ncauseCount\nfactorCount\ncreatedAt\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

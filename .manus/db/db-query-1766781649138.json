@@ -1,0 +1,30 @@
+{
+  "query": "SELECT aircraftMake, COUNT(*) as count FROM accidents WHERE LOWER(aircraftMake) LIKE '%embraer%' GROUP BY aircraftMake ORDER BY count DESC LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2iKLWGUstgLB53A.c25658259096 --database M9ya9YXSEZs4YEgpxR35XF --execute SELECT aircraftMake, COUNT(*) as count FROM accidents WHERE LOWER(aircraftMake) LIKE '%embraer%' GROUP BY aircraftMake ORDER BY count DESC LIMIT 10;",
+  "rows": [
+    {
+      "aircraftMake": "Embraer",
+      "count": "86"
+    },
+    {
+      "aircraftMake": "EMBRAER S A",
+      "count": "10"
+    },
+    {
+      "aircraftMake": "EMBRAER-EMPRESA BRASILEIRA DE",
+      "count": "6"
+    },
+    {
+      "aircraftMake": "EMBRAER EXECUTIVE AIRCRAFT INC",
+      "count": "3"
+    },
+    {
+      "aircraftMake": "EMBRAER S.A.",
+      "count": "2"
+    }
+  ],
+  "messages": [],
+  "stdout": "aircraftMake\tcount\nEmbraer\t86\nEMBRAER S A\t10\nEMBRAER-EMPRESA BRASILEIRA DE\t6\nEMBRAER EXECUTIVE AIRCRAFT INC\t3\nEMBRAER S.A.\t2\n",
+  "stderr": "",
+  "execution_time_ms": 112
+}
